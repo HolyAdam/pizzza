@@ -2,9 +2,13 @@ import React from 'react'
 import styles from './Search.module.scss'
 import searchSvg from '../../assets/img/search.svg'
 import closeSvg from '../../assets/img/close.svg'
+import { AppContext } from '../../App'
 
 
-export const Search = ({ searchVal, setSearchVal }) => {
+export const Search = () => {
+
+	const { searchVal, setSearchVal } = React.useContext(AppContext)
+	
 	return (
 		<div className={styles.root}>
 			<img className={styles.search} src={searchSvg} alt="Search" />
