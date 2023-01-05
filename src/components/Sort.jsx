@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSort } from '../store/slices/filter.slice';
 
 const sortNames = [
   {
@@ -27,7 +29,10 @@ const sortNames = [
   },
 ];
 
-export function Sort({ value, setValue }) {
+export function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector((state) => state.filter.sort);
+
   const [isVisible, setIsVisible] = React.useState(false);
 
   const onBtnClick = () => {
@@ -35,7 +40,7 @@ export function Sort({ value, setValue }) {
   };
 
   const onClickSort = (obj) => {
-    setValue(obj);
+    dispatch(setSort(obj));
     setIsVisible(false);
   };
 
@@ -62,16 +67,13 @@ export function Sort({ value, setValue }) {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={onBtnClick}>{value.name}</span>
+        <span onClick={onBtnClick}>{sort.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
           <ul>
             {sortNames.map((obj, i) => (
-              <li
-                key={i}
-                className={value.name === obj.name ? 'active' : ''}
-                onClick={() => onClickSort(obj)}>
+              <li key={i} className={sort.name === obj.name ? 'active' : ''} onClick={() => onClickSort(obj)}>
                 {obj.name}
               </li>
             ))}
