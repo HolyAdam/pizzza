@@ -1,4 +1,12 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  addItem,
+  selectCartItemById,
+} from '../../store/slices/cart.slice';
+
+const namingTypes = ['тонкое', 'традиционное'];
 
 export function PizzaBlock({
   title,
@@ -10,11 +18,27 @@ export function PizzaBlock({
   rating,
   imageUrl,
 }) {
-  
-  const namingTypes = ['тонкое', 'традиционное'];
-
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
+
+  const dispatch = useDispatch();
+
+  const ourObj = useSelector(selectCartItemById(id));
+
+  const addedCount = ourObj ? ourObj.count : 0;
+
+  const onClickAdd = () => {
+    dispatch(
+      addItem({
+        title,
+        price,
+        imageUrl,
+        id,
+        type: namingTypes[activeType],
+        size: sizes[activeSize],
+      }),
+    );
+  };
 
   return (
     <div className="pizza-block">
@@ -49,7 +73,9 @@ export function PizzaBlock({
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price || 0} ₽</div>
-        <button className="button button--outline button--add">
+        <button
+          className="button button--outline button--add"
+          onClick={onClickAdd}>
           <svg
             width="12"
             height="12"
@@ -62,7 +88,7 @@ export function PizzaBlock({
             />
           </svg>
           <span>Добавить</span>
-          <i>0</i>
+          {addedCount > 0 && <i>{addedCount}</i>}
         </button>
       </div>
     </div>

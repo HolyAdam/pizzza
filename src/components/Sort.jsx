@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSort } from '../store/slices/filter.slice';
+import { selectSort, setSort } from '../store/slices/filter.slice';
 
-const sortNames = [
+export const sortNames = [
   {
     name: 'популярности (возр.)',
     sortType: 'rating',
@@ -31,7 +31,8 @@ const sortNames = [
 
 export function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
+  const sort = useSelector(selectSort);
+  const sortRef = React.useRef(null);
 
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -44,8 +45,20 @@ export function Sort() {
     setIsVisible(false);
   };
 
+  React.useEffect(() => {
+    const fn = (e) => {
+      const pathDost = e.path || (e.composedPath && e.composedPath());
+      const path = pathDost.includes(sortRef.current);
+      if (!path) setIsVisible(false);
+    };
+
+    document.body.addEventListener('click', fn);
+
+    return () => document.body.removeEventListener('click', fn);
+  }, []);
+
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           style={
@@ -73,7 +86,12 @@ export function Sort() {
         <div className="sort__popup">
           <ul>
             {sortNames.map((obj, i) => (
-              <li key={i} className={sort.name === obj.name ? 'active' : ''} onClick={() => onClickSort(obj)}>
+              <li
+                key={i}
+                className={
+                  sort.sortType === obj.sortType ? 'active' : ''
+                }
+                onClick={() => onClickSort(obj)}>
                 {obj.name}
               </li>
             ))}
