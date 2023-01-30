@@ -4,7 +4,7 @@ import qs from 'qs';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Categories } from '../components/Categories';
-import { Sort } from '../components/Sort';
+import { SortPopup } from '../components/Sort';
 
 import { sortNames } from '../components/Sort';
 
@@ -40,9 +40,9 @@ const Home: React.FC = () => {
 
   const { items, status } = useSelector(selectPizzas);
 
-  const onCategoryChange = (i: number) => {
+  const onCategoryChange = React.useCallback((i: number) => {
     dispatch(setCategoryId(i));
-  };
+  }, []);
 
   const onChangePage = (number: number) => {
     dispatch(setPage(number));
@@ -131,7 +131,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} setValue={onCategoryChange} />
-        <Sort />
+        <SortPopup value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === 'error' ? (
