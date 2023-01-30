@@ -1,6 +1,14 @@
 import React from 'react';
 
-export function Categories({ value, setValue }) {
+type CategoriesProps = {
+  value: number;
+  setValue: (i: number) => void;
+};
+
+export const Categories: React.FC<CategoriesProps> = ({
+  value,
+  setValue,
+}) => {
   const categories = [
     'Все',
     'Мясные',
@@ -10,7 +18,7 @@ export function Categories({ value, setValue }) {
     'Закрытые',
   ];
 
-  const onClickCategory = (i) => {
+  const onClickCategory = (i: number) => {
     return () => {
       setValue(i);
     };
@@ -30,4 +38,4 @@ export function Categories({ value, setValue }) {
       </ul>
     </div>
   );
-}
+};

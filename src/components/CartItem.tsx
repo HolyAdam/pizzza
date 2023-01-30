@@ -7,7 +7,17 @@ import {
   removeItem,
 } from '../store/slices/cart.slice';
 
-export const CartItem = ({
+type CartItem = {
+  id: string;
+  title: string;
+  price: number;
+  count: number;
+  imageUrl: string;
+  type: string;
+  size: number;
+};
+
+export const CartItemBlock: React.FC<CartItem> = ({
   id,
   title,
   price,
@@ -19,7 +29,7 @@ export const CartItem = ({
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as CartItem));
   };
 
   const onClickMinus = () => {

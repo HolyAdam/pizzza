@@ -1,6 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from './../index';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+export type CartItem = {
+  title: string;
+  price: number;
+  imageUrl: string;
+  id: string;
+  type: string;
+  size: number;
+  count: number;
+}
+
+interface cartSliceState {
+  totalPrice: number,
+  items: CartItem[]
+}
+
+const initialState: cartSliceState = {
   totalPrice: 0,
   items: [],
 };
@@ -9,7 +25,7 @@ export const cardSlice = createSlice({
   name: 'card',
   initialState,
   reducers: {
-    addItem(state, action) {
+    addItem(state, action: PayloadAction<CartItem>) {
       const findItem = state.items.find(
         (item) => item.id === action.payload.id,
       );
@@ -27,7 +43,7 @@ export const cardSlice = createSlice({
         0,
       );
     },
-    removeItem(state, action) {
+    removeItem(state, action: PayloadAction<string>) {
       state.items = state.items.filter(
         (item) => item.id !== action.payload,
       );
@@ -37,16 +53,16 @@ export const cardSlice = createSlice({
         0,
       );
     },
-    minusItem(state, action) {
+    minusItem(state, action: PayloadAction<string>) {
       const findItem = state.items.find(
         (item) => item.id === action.payload,
       );
-      if (findItem.count === 1) {
+      if (findItem!.count === 1) {
         state.items = state.items.filter(
           (item) => item.id !== action.payload,
         );
       } else {
-        findItem.count--;
+        findItem!.count--;
       }
 
       state.totalPrice = state.items.reduce(
@@ -61,8 +77,8 @@ export const cardSlice = createSlice({
   },
 });
 
-export const selectCart = (state) => state.cart;
-export const selectCartItemById = (id) => (state) =>
+export const selectCart = (state: RootState) => state.cart;
+export const selectCartItemById = (id: string) => (state: RootState) =>
   state.cart.items.find((item) => item.id === id);
 
 export const { addItem, removeItem, minusItem, clearItems } =

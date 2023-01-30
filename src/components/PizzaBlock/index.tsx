@@ -1,14 +1,28 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import {
   addItem,
   selectCartItemById,
 } from '../../store/slices/cart.slice';
 
+import { CartItem } from '../../store/slices/cart.slice';
+
+type PizzaBlockProps = {
+  title: string;
+  price: number;
+  types: number[];
+  sizes: number[];
+  id: string;
+  category: number;
+  rating: number;
+  imageUrl: string;
+};
+
 const namingTypes = ['тонкое', 'традиционное'];
 
-export function PizzaBlock({
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   title,
   price,
   types,
@@ -17,7 +31,7 @@ export function PizzaBlock({
   category,
   rating,
   imageUrl,
-}) {
+}) => {
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
 
@@ -28,26 +42,30 @@ export function PizzaBlock({
   const addedCount = ourObj ? ourObj.count : 0;
 
   const onClickAdd = () => {
-    dispatch(
-      addItem({
-        title,
-        price,
-        imageUrl,
-        id,
-        type: namingTypes[activeType],
-        size: sizes[activeSize],
-      }),
-    );
+    const item: CartItem = {
+      title,
+      price,
+      imageUrl,
+      id,
+      type: namingTypes[activeType],
+      size: sizes[activeSize],
+      count: 0,
+    };
+    dispatch(addItem(item));
   };
 
   return (
     <div className="pizza-block">
-      <img
-        className="pizza-block__image"
-        src={imageUrl}
-        alt="Pizza"
-      />
-      <h4 className="pizza-block__title">{title || 'Неизвестно'}</h4>
+      <Link to={'/pizza/' + id}>
+        <img
+          className="pizza-block__image"
+          src={imageUrl}
+          alt="Pizza"
+        />
+        <h4 className="pizza-block__title">
+          {title || 'Неизвестно'}
+        </h4>
+      </Link>
       <div className="pizza-block__selector">
         <ul>
           {types.map((type, i) => (
@@ -93,4 +111,4 @@ export function PizzaBlock({
       </div>
     </div>
   );
-}
+};

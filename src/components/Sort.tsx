@@ -1,38 +1,47 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSort, setSort } from '../store/slices/filter.slice';
+import {
+  selectSort,
+  setSort,
+  SortTypeEnum,
+} from '../store/slices/filter.slice';
 
-export const sortNames = [
+type SortItem = {
+  name: string;
+  sortType: SortTypeEnum;
+};
+
+export const sortNames: SortItem[] = [
   {
     name: 'популярности (возр.)',
-    sortType: 'rating',
+    sortType: SortTypeEnum.RATING_DESC,
   },
   {
     name: 'популярности (убыв.)',
-    sortType: '-rating',
+    sortType: SortTypeEnum.RATING_ASC,
   },
   {
     name: 'цене (возр.)',
-    sortType: 'price',
+    sortType: SortTypeEnum.PRICE_DESC,
   },
   {
     name: 'цене (убыв.)',
-    sortType: '-price',
+    sortType: SortTypeEnum.PRICE_ASC,
   },
   {
     name: 'алфавиту (возр.)',
-    sortType: 'title',
+    sortType: SortTypeEnum.TITLE_DESC,
   },
   {
     name: 'алфавиту (убыв.)',
-    sortType: '-title',
+    sortType: SortTypeEnum.TITLE_ASC,
   },
 ];
 
 export function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef(null);
+  const sortRef = React.useRef<HTMLDivElement>(null);
 
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -40,13 +49,13 @@ export function Sort() {
     setIsVisible(!isVisible);
   };
 
-  const onClickSort = (obj) => {
+  const onClickSort = (obj: SortItem) => {
     dispatch(setSort(obj));
     setIsVisible(false);
   };
 
   React.useEffect(() => {
-    const fn = (e) => {
+    const fn = (e: any) => {
       const pathDost = e.path || (e.composedPath && e.composedPath());
       const path = pathDost.includes(sortRef.current);
       if (!path) setIsVisible(false);
