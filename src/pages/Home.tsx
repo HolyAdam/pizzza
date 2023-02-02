@@ -12,17 +12,19 @@ import {
   setCategoryId,
   setPage,
   setFilters,
-  selectFilter,
-} from '../store/slices/filter.slice';
+} from '../store/filter/slice';
+
+import { selectFilter } from '../store/filter/selector';
 
 import { PizzaBlock } from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import { Pagination } from '../components/Pagination';
-import {
-  fetchPizzas,
-  FetchPizzasArgs,
-  selectPizzas,
-} from '../store/slices/pizzas.slice';
+import { selectPizzas } from '../store/pizzas/selector';
+
+import { fetchPizzas } from '../store/pizzas/slice';
+
+import { FetchPizzasArgs } from '../store/pizzas/types';
+
 import { useAppDispatch } from '../store';
 
 const Home: React.FC = () => {

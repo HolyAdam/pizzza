@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import filterReducer from './slices/filter.slice';
-import cardReducer from './slices/cart.slice';
-import pizzasReducer from './slices/pizzas.slice';
+import filterReducer from './filter/slice';
+import cardReducer from './cart/slice';
+import pizzasReducer from './pizzas/slice';
 import { useDispatch } from 'react-redux';
 
 export const store = configureStore({

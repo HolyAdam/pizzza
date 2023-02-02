@@ -2,12 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import {
-  addItem,
-  selectCartItemById,
-} from '../../store/slices/cart.slice';
+import { selectCartItemById } from '../../store/cart/selector';
+import { addItem } from '../../store/cart/slice';
 
-import { CartItem } from '../../store/slices/cart.slice';
+import { CartItem } from '../../store/cart/types';
 
 type PizzaBlockProps = {
   title: string;
